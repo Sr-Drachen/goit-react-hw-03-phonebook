@@ -11,23 +11,21 @@ class ContactForm extends React.Component {
   nameInputId = nanoid();
   numberInputId = nanoid();
 
-
   handleSubmit = event => {
     event.preventDefault();
 
-
-    this.props.onSubmit({ name: this.state.name, number: this.state.number });
-
+    this.props.onSubmit({
+      name: this.state.name.trim(),
+      number: this.state.number.trim(),
+    });
 
     this.reset();
   };
-
 
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
-
 
   reset = () => {
     this.setState({ number: '', name: '' });
@@ -62,7 +60,9 @@ class ContactForm extends React.Component {
           />
         </Label>
 
-        <Button type="submit">Add Contact </Button>
+        <Button type="submit">
+          Add contact
+        </Button>
       </Form>
     );
   }
