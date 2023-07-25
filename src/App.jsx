@@ -32,14 +32,12 @@ class App extends Component {
       
     }
   }
-
- 
   addContact = contact => {
     const isInContacts = this.state.contacts.some(
       ({ name }) =>
         name.toLowerCase().trim() === contact.name.toLowerCase().trim()
     );
-    
+
     if (isInContacts) {
       alert(`${contact.name} is already in contacts`);
       return;
@@ -49,19 +47,8 @@ class App extends Component {
     }));
   };
 
-  
   changeFilter = event => {
     this.setState({ filter: event.target.value.trim() });
-  };
-
-
-  getVisibleContacts = () => {
-    const { filter, contacts } = this.state;
-    const normalizedFilter = filter.toLowerCase();
-
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
   };
 
   removeContact = contactId => {
@@ -73,8 +60,11 @@ class App extends Component {
   };
 
   render() {
-    const visibleContacts = this.getVisibleContacts();
-    const { filter } = this.state;
+    const { filter, contacts } = this.state;
+    const hasContacts = contacts.length > 0;
+    const visibleContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
 
     return (
       <Container>
@@ -83,14 +73,12 @@ class App extends Component {
         <ContactForm onSubmit={this.addContact} />
 
         <SubTitle>Contacts</SubTitle>
-        {this.state.contacts.length > 0 ? (
-
+        {hasContacts ? (
           <Filter value={filter} onChangeFilter={this.changeFilter} />
         ) : (
           <Wrapper>Your phonebook is empty. Add first contact!</Wrapper>
         )}
-        {this.state.contacts.length > 0 && (
-
+        {hasContacts && (
           <ContactList
             contacts={visibleContacts}
             onRemoveContact={this.removeContact}
